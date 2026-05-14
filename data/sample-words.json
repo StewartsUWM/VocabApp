@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "word": "abundant",
+    "definition": "existing in large quantities",
+    "example": "Food was abundant.",
+    "category": "adjective",
+    "difficulty": "easy",
+    "createdAt": "2023-10-01"
+  },
+  {
+    "id": "2",
+    "word": "benevolent",
+    "definition": "well-meaning and kindly",
+    "example": "The benevolent old man donated to charity.",
+    "category": "adjective",
+    "difficulty": "medium",
+    "createdAt": "2023-10-02"
+  },
+  {
+    "id": "3",
+    "word": "candid",
+    "definition": "truthful and straightforward",
+    "example": "She gave a candid account of the incident.",
+    "category": "adjective",
+    "difficulty": "medium",
+    "createdAt": "2023-10-03"
+  },
+  {
+    "id": "4",
+    "word": "diligent",
+    "definition": "having or showing care and conscientiousness in one's work or duties",
+    "example": "He was a diligent student who always completed his assignments on time.",
+    "category": "adjective",
+    "difficulty": "medium",
+    "createdAt": "2023-10-04"
+  },
+  {
+    "id": "5",
+    "word": "ephemeral",
+    "definition": "lasting for a very short time",
+    "example": "Fame is ephemeral; it doesn't last.",
+    "category": "adjective",
+    "difficulty": "hard",
+    "createdAt": "2023-10-05"
+  }
+]
