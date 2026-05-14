@@ -4,7 +4,7 @@
 
 ## Overview
 
-The Vocabulary Learning Web App is a lightweight, browser-based application designed to help users learn and manage vocabulary effectively. The app allows users to add, edit, delete, and search for vocabulary words, all while ensuring that their data is saved locally in the browser. It is built using modern web technologies and is optimized for mobile devices.
+The Vocabulary Learning Web App is a lightweight, browser-based application designed to help users learn and manage vocabulary effectively. The app allows users to add, edit, delete, and search for vocabulary words.
 
 ## Features
 
@@ -43,6 +43,10 @@ vocab-app
 - To edit an existing word, click on the word in the list, make your changes, and save.
 - To delete a word, click the delete button next to the word you wish to remove.
 - Use the search bar to filter words based on your input.
+
+## Author
+
+**DeAngelo Stewart**
 
 ## License
 
