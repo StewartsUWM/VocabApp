@@ -2,6 +2,7 @@
 
 const vocabularyList = JSON.parse(localStorage.getItem('vocabularyList')) || [];
 const BUBBLE_LIMIT = 10;
+let selectedWordId = null;
 
 function renderVocabulary() {
     const vocabularyContainer = document.getElementById('vocabulary-container');
@@ -104,17 +105,40 @@ function renderWordList() {
 
     vocabularyList.forEach(entry => {
         const li = document.createElement('li');
+        li.classList.add('word-item-container');
         li.innerHTML = `
-            <div class="word-item">
-                <div>
-                    <strong>${entry.word}</strong><br>
-                    <small>${entry.definition}</small>
+            <div class="word-item" onclick="toggleWordDetails('${entry.id}')">
+                <div class="word-header">
+                    <strong>${entry.word}</strong>
+                </div>
+                <div class="word-details" id="details-${entry.id}" style="display: none;">
+                    <p><strong>Definition:</strong> ${entry.definition}</p>
+                    <p><strong>Category:</strong> ${entry.category}</p>
+                    <p><strong>Difficulty:</strong> ${entry.difficulty}</p>
                 </div>
                 <button onclick="deleteWord('${entry.id}')" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);">Delete</button>
             </div>
         `;
         wordListContainer.appendChild(li);
     });
+}
+
+function toggleWordDetails(id) {
+    const detailsElement = document.getElementById(`details-${id}`);
+    
+    // Hide all other open details
+    document.querySelectorAll('.word-details').forEach(el => {
+        if (el.id !== `details-${id}`) {
+            el.style.display = 'none';
+        }
+    });
+    
+    // Toggle current details
+    if (detailsElement) {
+        detailsElement.style.display = detailsElement.style.display === 'none' ? 'block' : 'none';
+    }
+    
+    selectedWordId = detailsElement.style.display === 'block' ? id : null;
 }
 
 function deleteWord(id) {
@@ -159,7 +183,7 @@ function initializeAllWordsPage() {
             <p><strong>Category:</strong> ${entry.category}</p>
             <p><strong>Difficulty:</strong> ${entry.difficulty}</p>
             <p><strong>Date Added:</strong> ${entry.createdAt}</p>
-            <button onclick="deleteWordFromAllWords('${entry.id}')" style="margin-top: 10px; background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); padding: 6px 12px; font-size: 0.9em;">Delete</button>
+            <button onclick="deleteWordFromAllWords('${entry.id}')" style="margin-top: 10px; background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); padding: 6px 12px; font-size: 0.9em;">D[...]
         `;
         grid.appendChild(card);
     });
