@@ -1,79 +1,192 @@
 // app.js
 
 const vocabularyList = JSON.parse(localStorage.getItem('vocabularyList')) || [];
+const BUBBLE_LIMIT = 10;
 
 function renderVocabulary() {
     const vocabularyContainer = document.getElementById('vocabulary-container');
-    vocabularyContainer.innerHTML = '';
+    if (vocabularyContainer) {
+        vocabularyContainer.innerHTML = '';
 
-    vocabularyList.forEach(entry => {
-        const wordElement = document.createElement('div');
-        wordElement.classList.add('vocabulary-entry');
-        wordElement.innerHTML = `
-            <h3>${entry.word}</h3>
-            <p><strong>Definition:</strong> ${entry.definition}</p>
-            <p><strong>Example:</strong> ${entry.example}</p>
-            <p><strong>Category:</strong> ${entry.category}</p>
-            <p><strong>Difficulty:</strong> ${entry.difficulty}</p>
-            <p><strong>Date Added:</strong> ${entry.createdAt}</p>
-            <button onclick="editWord('${entry.id}')">Edit</button>
-            <button onclick="deleteWord('${entry.id}')">Delete</button>
-        `;
-        vocabularyContainer.appendChild(wordElement);
-    });
+        vocabularyList.forEach(entry => {
+            const wordElement = document.createElement('div');
+            wordElement.classList.add('vocabulary-entry');
+            wordElement.innerHTML = `
+                <h3>${entry.word}</h3>
+                <p><strong>Definition:</strong> ${entry.definition}</p>
+                <p><strong>Example:</strong> ${entry.example}</p>
+                <p><strong>Category:</strong> ${entry.category}</p>
+                <p><strong>Difficulty:</strong> ${entry.difficulty}</p>
+                <p><strong>Date Added:</strong> ${entry.createdAt}</p>
+                <button onclick="editWord('${entry.id}')">Edit</button>
+                <button onclick="deleteWord('${entry.id}')">Delete</button>
+            `;
+            vocabularyContainer.appendChild(wordElement);
+        });
+    }
 }
 
-function addWord() {
-    const wordInput = document.getElementById('word-input').value;
-    const definitionInput = document.getElementById('definition-input').value;
-    const exampleInput = document.getElementById('example-input').value;
-    const categoryInput = document.getElementById('category-input').value;
-    const difficultyInput = document.getElementById('difficulty-input').value;
+function renderBubbles() {
+    const bubblesContainer = document.getElementById('word-bubbles');
+    const moreButton = document.getElementById('more-button');
+    
+    if (!bubblesContainer) return;
+    
+    bubblesContainer.innerHTML = '';
+    
+    // Show only the first BUBBLE_LIMIT words
+    const displayWords = vocabularyList.slice(0, BUBBLE_LIMIT);
+    
+    displayWords.forEach(entry => {
+        const bubble = document.createElement('span');
+        bubble.classList.add('word-bubble');
+        bubble.textContent = entry.word;
+        bubble.title = entry.definition;
+        bubble.addEventListener('click', () => {
+            // Scroll to or highlight the word in the list if on same page
+            const wordItems = document.querySelectorAll('.word-list li');
+            wordItems.forEach(item => {
+                if (item.textContent.includes(entry.word)) {
+                    item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    item.style.backgroundColor = '#fff3cd';
+                    setTimeout(() => {
+                        item.style.backgroundColor = '';
+                    }, 2000);
+                }
+            });
+        });
+        bubblesContainer.appendChild(bubble);
+    });
+    
+    // Show more button only if there are more than BUBBLE_LIMIT words
+    if (moreButton) {
+        moreButton.style.display = vocabularyList.length > BUBBLE_LIMIT ? 'inline-block' : 'none';
+    }
+}
+
+function addWord(event) {
+    event.preventDefault();
+    
+    const wordInput = document.getElementById('word').value;
+    const definitionInput = document.getElementById('definition').value;
+    const exampleInput = document.getElementById('example').value;
+    const categoryInput = document.getElementById('category').value;
+    const difficultyInput = document.getElementById('difficulty').value;
+
+    if (!wordInput || !definitionInput || !exampleInput) {
+        alert('Please fill in all required fields');
+        return;
+    }
 
     const newEntry = {
         id: Date.now().toString(),
         word: wordInput,
         definition: definitionInput,
         example: exampleInput,
-        category: categoryInput,
-        difficulty: difficultyInput,
+        category: categoryInput || 'Uncategorized',
+        difficulty: difficultyInput || 'Medium',
         createdAt: new Date().toISOString().split('T')[0]
     };
 
-    vocabularyList.push(newEntry);
+    vocabularyList.unshift(newEntry);
     localStorage.setItem('vocabularyList', JSON.stringify(vocabularyList));
-    renderVocabulary();
+    
+    renderBubbles();
+    renderWordList();
     clearInputs();
 }
 
-function editWord(id) {
-    const entry = vocabularyList.find(item => item.id === id);
-    if (entry) {
-        document.getElementById('word-input').value = entry.word;
-        document.getElementById('definition-input').value = entry.definition;
-        document.getElementById('example-input').value = entry.example;
-        document.getElementById('category-input').value = entry.category;
-        document.getElementById('difficulty-input').value = entry.difficulty;
-        deleteWord(id);
-    }
+function renderWordList() {
+    const wordListContainer = document.getElementById('word-list');
+    if (!wordListContainer) return;
+    
+    wordListContainer.innerHTML = '';
+
+    vocabularyList.forEach(entry => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <div class="word-item">
+                <div>
+                    <strong>${entry.word}</strong><br>
+                    <small>${entry.definition}</small>
+                </div>
+                <button onclick="deleteWord('${entry.id}')" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);">Delete</button>
+            </div>
+        `;
+        wordListContainer.appendChild(li);
+    });
 }
 
 function deleteWord(id) {
-    const index = vocabularyList.findIndex(item => item.id === id);
-    if (index > -1) {
-        vocabularyList.splice(index, 1);
-        localStorage.setItem('vocabularyList', JSON.stringify(vocabularyList));
-        renderVocabulary();
+    if (confirm('Are you sure you want to delete this word?')) {
+        const index = vocabularyList.findIndex(item => item.id === id);
+        if (index > -1) {
+            vocabularyList.splice(index, 1);
+            localStorage.setItem('vocabularyList', JSON.stringify(vocabularyList));
+            renderBubbles();
+            renderWordList();
+        }
     }
 }
 
 function clearInputs() {
-    document.getElementById('word-input').value = '';
-    document.getElementById('definition-input').value = '';
-    document.getElementById('example-input').value = '';
-    document.getElementById('category-input').value = '';
-    document.getElementById('difficulty-input').value = '';
+    document.getElementById('word').value = '';
+    document.getElementById('definition').value = '';
+    document.getElementById('example').value = '';
+    document.getElementById('category').value = '';
+    document.getElementById('difficulty').value = '';
 }
 
-document.getElementById('add-word-button').addEventListener('click', addWord);
-window.addEventListener('load', renderVocabulary);
+function initializeAllWordsPage() {
+    const container = document.getElementById('all-words-content');
+    if (!container) return;
+    
+    if (vocabularyList.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>No words added yet. Start adding words from the main page!</p></div>';
+        return;
+    }
+    
+    const grid = document.createElement('div');
+    grid.classList.add('words-grid');
+    
+    vocabularyList.forEach(entry => {
+        const card = document.createElement('div');
+        card.classList.add('word-card');
+        card.innerHTML = `
+            <h3>${entry.word}</h3>
+            <p><strong>Definition:</strong> ${entry.definition}</p>
+            <p><strong>Example:</strong> ${entry.example}</p>
+            <p><strong>Category:</strong> ${entry.category}</p>
+            <p><strong>Difficulty:</strong> ${entry.difficulty}</p>
+            <p><strong>Date Added:</strong> ${entry.createdAt}</p>
+            <button onclick="deleteWordFromAllWords('${entry.id}')" style="margin-top: 10px; background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); padding: 6px 12px; font-size: 0.9em;">Delete</button>
+        `;
+        grid.appendChild(card);
+    });
+    
+    container.innerHTML = '';
+    container.appendChild(grid);
+}
+
+function deleteWordFromAllWords(id) {
+    if (confirm('Are you sure you want to delete this word?')) {
+        const index = vocabularyList.findIndex(item => item.id === id);
+        if (index > -1) {
+            vocabularyList.splice(index, 1);
+            localStorage.setItem('vocabularyList', JSON.stringify(vocabularyList));
+            initializeAllWordsPage();
+        }
+    }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const wordForm = document.getElementById('word-form');
+    if (wordForm) {
+        wordForm.addEventListener('submit', addWord);
+    }
+    
+    renderBubbles();
+    renderWordList();
+    initializeAllWordsPage();
+});
