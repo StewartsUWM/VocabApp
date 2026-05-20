@@ -8,22 +8,38 @@
 </head>
 <body>
     <header>
-        <h1>Vocabulary Learning App</h1>
+        <h1>📚 Vocabulary Learning App</h1>
         <p>Manage your vocabulary effectively!</p>
     </header>
     <main>
-        <section id="word-management">
+        <section id="word-management" class="container">
             <h2>Vocabulary Words</h2>
-            <input type="text" id="search" placeholder="Search words...">
-            <ul id="word-list"></ul>
-            <form id="word-form">
-                <input type="text" id="word" placeholder="Word" required>
-                <input type="text" id="definition" placeholder="Definition" required>
-                <input type="text" id="example" placeholder="Example sentence" required>
-                <input type="text" id="category" placeholder="Category">
-                <input type="text" id="difficulty" placeholder="Difficulty level">
-                <button type="submit">Add Word</button>
-            </form>
+            <input type="text" id="search" placeholder="🔍 Search words...">
+            <ul id="word-list" class="word-list"></ul>
+            
+            <div class="form-container">
+                <h3>Add New Word</h3>
+                <form id="word-form">
+                    <div class="form-group">
+                        <input type="text" id="word" placeholder="Word" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="definition" placeholder="Definition" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="example" placeholder="Example sentence" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="text" id="category" placeholder="Category">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="difficulty" placeholder="Difficulty level">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary">✨ Add Word</button>
+                </form>
+            </div>
         </section>
     </main>
     <footer>
