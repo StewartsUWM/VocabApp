@@ -106,19 +106,41 @@ function renderWordList() {
     vocabularyList.forEach(entry => {
         const li = document.createElement('li');
         li.classList.add('word-item-container');
-        li.innerHTML = `
-            <div class="word-item" onclick="toggleWordDetails('${entry.id}')">
-                <div class="word-header">
-                    <strong>${entry.word}</strong>
-                </div>
-                <div class="word-details" id="details-${entry.id}" style="display: none;">
-                    <p><strong>Definition:</strong> ${entry.definition}</p>
-                    <p><strong>Category:</strong> ${entry.category}</p>
-                    <p><strong>Difficulty:</strong> ${entry.difficulty}</p>
-                </div>
-                <button onclick="deleteWord('${entry.id}')" style="background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);">Delete</button>
-            </div>
+        
+        const wordItem = document.createElement('div');
+        wordItem.classList.add('word-item');
+        
+        const wordHeader = document.createElement('div');
+        wordHeader.classList.add('word-header');
+        wordHeader.innerHTML = `<strong>${entry.word}</strong>`;
+        wordHeader.onclick = (e) => {
+            e.stopPropagation();
+            toggleWordDetails(entry.id);
+        };
+        
+        const wordDetails = document.createElement('div');
+        wordDetails.classList.add('word-details');
+        wordDetails.id = `details-${entry.id}`;
+        wordDetails.style.display = 'none';
+        wordDetails.innerHTML = `
+            <p><strong>Definition:</strong> ${entry.definition}</p>
+            <p><strong>Category:</strong> ${entry.category}</p>
+            <p><strong>Difficulty:</strong> ${entry.difficulty}</p>
         `;
+        
+        const deleteButton = document.createElement('button');
+        deleteButton.style.background = 'linear-gradient(135deg, #dc3545 0%, #c82333 100%)';
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = (e) => {
+            e.stopPropagation();
+            deleteWord(entry.id);
+        };
+        
+        wordItem.appendChild(wordHeader);
+        wordItem.appendChild(wordDetails);
+        wordItem.appendChild(deleteButton);
+        
+        li.appendChild(wordItem);
         wordListContainer.appendChild(li);
     });
 }
