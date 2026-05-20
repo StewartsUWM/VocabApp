@@ -1,28 +1,96 @@
+:root {
+    --primary-color: #0066cc;
+    --primary-hover: #0052a3;
+    --success-color: #28a745;
+    --success-hover: #218838;
+    --danger-color: #dc3545;
+    --danger-hover: #c82333;
+    --light-bg: #f8f9fa;
+    --border-color: #dee2e6;
+    --text-color: #333;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    color: var(--text-color);
 }
 
 header {
-    background: #007bff;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #0052a3 100%);
     color: #ffffff;
-    padding: 10px 20px;
+    padding: 40px 20px;
     text-align: center;
+    box-shadow: var(--shadow);
 }
 
-h1 {
+header h1 {
     margin: 0;
+    font-size: 2.5em;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+header p {
+    margin: 10px 0 0 0;
+    font-size: 1.1em;
+    opacity: 0.95;
+    font-weight: 300;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: calc(100vh - 200px);
+    padding: 40px 20px;
 }
 
 .container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
+    max-width: 700px;
+    width: 100%;
     background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 40px;
+    animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#word-management h2 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 1.8em;
+}
+
+#word-management > input[type="text"] {
+    display: block;
+    margin: 0 auto 30px auto;
+    max-width: 100%;
+}
+
+#search {
+    width: 100%;
 }
 
 input[type="text"],
@@ -30,33 +98,102 @@ input[type="date"],
 select,
 textarea {
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 12px 15px;
+    margin: 0;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 1em;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+/* Form Styling */
+.form-container {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid var(--light-bg);
+}
+
+.form-container h3 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-row .form-group {
+    margin-bottom: 0;
 }
 
 button {
-    background: #28a745;
+    background: linear-gradient(135deg, var(--success-color) 0%, #218838 100%);
     color: #ffffff;
     border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
+    padding: 12px 30px;
+    border-radius: 6px;
     cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-align: center;
+    letter-spacing: 0.5px;
 }
 
 button:hover {
-    background: #218838;
+    background: linear-gradient(135deg, var(--success-hover) 0%, #1e7e34 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
 }
 
+button:active {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #0052a3 100%);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--primary-hover) 0%, #003d7a 100%);
+    box-shadow: 0 6px 15px rgba(0, 102, 204, 0.4);
+}
+
+/* Word List Styling */
 .word-list {
     list-style-type: none;
     padding: 0;
+    margin: 30px 0;
 }
 
 .word-list li {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
+    padding: 15px;
+    border-bottom: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.word-list li:hover {
+    background: var(--light-bg);
+    padding-left: 20px;
 }
 
 .word-list li:last-child {
@@ -67,22 +204,93 @@ button:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 15px;
 }
 
 .word-list .word-item button {
-    background: #dc3545;
+    background: linear-gradient(135deg, var(--danger-color) 0%, #c82333 100%);
+    padding: 8px 15px;
+    width: auto;
+    font-size: 0.9em;
 }
 
 .word-list .word-item button:hover {
-    background: #c82333;
+    background: linear-gradient(135deg, var(--danger-hover) 0%, #bd2130 100%);
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.4);
 }
 
-@media (max-width: 600px) {
+footer {
+    background: rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.95em;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
     .container {
-        padding: 10px;
+        padding: 25px;
+    }
+
+    header h1 {
+        font-size: 2em;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
     }
 
     button {
+        padding: 10px 20px;
+    }
+
+    .word-list .word-item {
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .word-list .word-item button {
         width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    main {
+        padding: 20px 15px;
+    }
+
+    .container {
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    header {
+        padding: 30px 15px;
+    }
+
+    header h1 {
+        font-size: 1.6em;
+    }
+
+    header p {
+        font-size: 1em;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select,
+    textarea {
+        padding: 10px 12px;
+        font-size: 16px;
+    }
+
+    button {
+        padding: 10px 15px;
+        font-size: 0.95em;
     }
 }
